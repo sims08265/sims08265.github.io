@@ -21,6 +21,8 @@ Owner: Celestin Gills SIMO NOUAYOU (GitHub `sims08265`).
    - `tools/og-image.html`: source of `public/og-image.png` (social preview). It shows the name,
      "AI engineering student · Efrei Paris", "Open to a 3-month AI internship · Aug 2027" and a few skills.
      If any of these change, update it and regenerate the PNG with the command in its header comment.
+   - `tools/favicon.html`: source of `public/favicon.ico` and `public/apple-touch-icon.png` (the initials
+     `PROFILE.initials`). If the initials change, update it and run `python tools/favicon.py`.
 
 ## Update procedure
 
