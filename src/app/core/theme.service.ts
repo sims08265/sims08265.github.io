@@ -1,11 +1,11 @@
-import { Injectable, signal } from '@angular/core';
+import { DOCUMENT, Injectable, inject, signal } from '@angular/core';
 
 type Theme = 'light' | 'dark';
 
 /** Thème sombre par défaut ; le choix du visiteur est mémorisé. */
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
-  private readonly root = document.documentElement;
+  private readonly root = inject(DOCUMENT).documentElement;
   readonly isDark = signal(this.root.getAttribute('data-theme') !== 'light');
 
   toggle(): void {

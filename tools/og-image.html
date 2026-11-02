@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>og-image</title>
+<!-- Source of public/og-image.png (1200x630). Regenerate after editing (see README):
+     "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe" --headless --hide-scrollbars --virtual-time-budget=5000 --window-size=1200,630 --screenshot="public/og-image.png" "tools/og-image.html"
+     Only facts from src/app/core/portfolio.data.ts may appear here. -->
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@500&family=JetBrains+Mono:wght@500&display=block" rel="stylesheet">
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { width: 1200px; height: 630px; overflow: hidden; background: #06080a; color: #aab4bf; font-family: Inter, sans-serif; position: relative; }
+  .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 80% 80% at 70% 30%, #000 20%, transparent 80%); }
+  .glow1 { position: absolute; width: 700px; height: 700px; right: -220px; top: -360px; border-radius: 50%; background: rgba(74,222,128,.22); filter: blur(120px); }
+  .glow2 { position: absolute; width: 520px; height: 520px; left: -240px; bottom: -300px; border-radius: 50%; background: rgba(34,211,238,.16); filter: blur(110px); }
+  .wrap { position: absolute; inset: 0; padding: 70px 80px; display: flex; flex-direction: column; }
+  .top { display: flex; align-items: center; justify-content: space-between; }
+  .logo { display: flex; align-items: center; gap: 14px; font: 500 24px 'JetBrains Mono', monospace; color: #f1f5f4; }
+  .logo b { color: #4ade80; font-weight: 500; }
+  .mark { width: 52px; height: 52px; border-radius: 15px; display: grid; place-items: center; background: linear-gradient(100deg, #4ade80, #2dd4bf 50%, #22d3ee); color: #04130a; font: 800 22px 'Bricolage Grotesque'; }
+  .chip { display: flex; align-items: center; gap: 12px; padding: 12px 20px; border-radius: 999px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.03); font: 500 19px 'JetBrains Mono', monospace; color: #d7e3dc; }
+  .dot { width: 11px; height: 11px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 14px #4ade80; }
+  h1 { margin-top: 64px; font: 800 150px/.9 'Bricolage Grotesque'; letter-spacing: -.035em; color: #f1f5f4; }
+  h1 span { background: linear-gradient(100deg, #4ade80, #2dd4bf 50%, #22d3ee); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  h1 i { font-style: normal; color: #4ade80; }
+  .role { margin-top: 30px; font: 600 38px 'Bricolage Grotesque'; color: #f1f5f4; letter-spacing: -.01em; }
+  .role em { font-style: normal; color: #66717d; font-weight: 600; }
+  .tags { margin-top: auto; display: flex; gap: 12px; }
+  .tags span { padding: 10px 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,.1); background: rgba(74,222,128,.06); font: 500 20px 'JetBrains Mono', monospace; color: #d7e3dc; }
+</style>
+</head>
+<body>
+  <div class="grid"></div><div class="glow1"></div><div class="glow2"></div>
+  <div class="wrap">
+    <div class="top">
+      <div class="logo"><span class="mark">CS</span><span>sims08265<b>.</b>github<b>.</b>io</span></div>
+      <div class="chip"><span class="dot"></span>Open to a 3-month AI internship · Aug 2027</div>
+    </div>
+    <h1>Celestin <span>Simo</span><i>.</i></h1>
+    <p class="role">AI engineering student <em>·</em> Efrei Paris</p>
+    <div class="tags"><span>LLMs</span><span>NLP</span><span>OCR</span><span>FastAPI</span><span>Docker</span><span>CI/CD</span></div>
+  </div>
+</body>
+</html>

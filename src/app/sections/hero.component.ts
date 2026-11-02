@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, afterNextRender, effect, inject, signal } from '@angular/core';
 import { I18nService } from '../core/i18n.service';
 import { HERO_FLOATS, MARQUEE, PROFILE, TERMINAL } from '../core/portfolio.data';
 import { IconComponent } from '../shared/icon.component';
@@ -7,6 +7,7 @@ import { NetworkBgComponent } from '../shared/network-bg.component';
 /** Script du terminal (portfolio.data.ts) : chaque commande est tapée, puis sa sortie s'affiche. */
 const SCRIPT = TERMINAL.script;
 type Line = { kind: 'cmd' | 'out'; html: string };
+const ALL_LINES: Line[] = SCRIPT.flatMap(s => [{ kind: 'cmd' as const, html: s.cmd }, ...s.out.map(o => ({ kind: 'out' as const, html: o }))]);
 
 @Component({
   selector: 'app-hero',
@@ -85,23 +86,28 @@ export class HeroComponent {
   protected readonly marquee = MARQUEE;
   protected readonly floats = HERO_FLOATS;
   protected readonly terminalTitle = TERMINAL.title;
-  protected readonly typed = signal('');
-  protected readonly lines = signal<Line[]>([]);
+  // Premier mot rendu d'emblée : le HTML pré-rendu (et la page sans JS) affiche une phrase complète.
+  protected readonly typed = signal(this.i18n.l(PROFILE.typed)[0]);
+  // Script complet dans le HTML pré-rendu ; dans le navigateur, il est retapé ligne par ligne.
+  protected readonly lines = signal<Line[]>(ALL_LINES);
   protected readonly typing = signal('');
 
   private typeTimer?: ReturnType<typeof setTimeout>;
   private termTimer?: ReturnType<typeof setTimeout>;
 
+  private readonly animate = signal(false);
+
   constructor() {
-    effect(() => this.startTyping(this.i18n.l(PROFILE.typed)));
-    this.runTerminal();
+    // Animations dans le navigateur uniquement (pas pendant le pré-rendu).
+    afterNextRender(() => { this.animate.set(true); this.runTerminal(); });
+    effect(() => { if (this.animate()) this.startTyping(this.i18n.l(PROFILE.typed)); });
     inject(DestroyRef).onDestroy(() => { clearTimeout(this.typeTimer); clearTimeout(this.termTimer); });
   }
 
-  /** Mot qui s'écrit / s'efface en boucle. */
+  /** Mot qui s'écrit / s'efface en boucle (en partant du premier mot déjà affiché). */
   private startTyping(words: string[]): void {
     clearTimeout(this.typeTimer);
-    let w = 0, c = 0, deleting = false;
+    let w = 0, c = words[0].length, deleting = false;
     const step = () => {
       const word = words[w];
       this.typed.set(word.slice(0, c));
@@ -116,10 +122,8 @@ export class HeroComponent {
   /** Tape chaque commande caractère par caractère puis affiche sa sortie. */
   private runTerminal(): void {
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) {
-      this.lines.set(SCRIPT.flatMap(s => [{ kind: 'cmd' as const, html: s.cmd }, ...s.out.map(o => ({ kind: 'out' as const, html: o }))]));
-      return;
-    }
+    if (reduce) return;
+    this.lines.set([]);
     let block = 0, char = 0;
     const tick = () => {
       if (block >= SCRIPT.length) return;

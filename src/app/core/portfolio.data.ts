@@ -75,6 +75,21 @@ export const UI_TEXT: Record<Lang, Record<UiKey, string>> = {
   },
 };
 
+/* ================= Référencement (title, meta, Open Graph) ================= */
+// Injecté dans le HTML pré-rendu au build : c'est ce que voient Google, LinkedIn, etc.
+export const SITE = {
+  url: 'https://sims08265.github.io/',
+  image: 'https://sims08265.github.io/og-image.png',
+  title: {
+    fr: 'Celestin Simo — Élève-ingénieur IA : LLM, NLP et données',
+    en: 'Celestin Simo — AI engineering student: LLMs, NLP and data',
+  } as Localized,
+  description: {
+    fr: "Portfolio de Celestin Gills SIMO NOUAYOU, élève-ingénieur à Efrei Paris orienté ingénierie de l'IA : LLM, NLP, données et déploiement (Docker, CI/CD, monitoring). Ouvert à un stage IA de 3 mois à partir d'août 2027.",
+    en: 'Portfolio of Celestin Gills SIMO NOUAYOU, engineering student at Efrei Paris focused on AI engineering: LLMs, NLP, data and deployment (Docker, CI/CD, monitoring). Open to a 3-month AI internship from August 2027.',
+  } as Localized,
+};
+
 /* ================= Profil ================= */
 export const PROFILE = {
   firstNames: 'Celestin Gills',

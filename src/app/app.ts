@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, afterNextRender, inject } from '@angular/core';
 import { I18nService } from './core/i18n.service';
+import { SeoService } from './core/seo.service';
 import { PROFILE } from './core/portfolio.data';
 import { NavbarComponent } from './sections/navbar.component';
 import { HeroComponent } from './sections/hero.component';
@@ -57,9 +58,12 @@ export class App {
   protected readonly giant = `${PROFILE.displayFirst} ${PROFILE.displayLast}`.toUpperCase();
 
   constructor() {
+    inject(SeoService);
     const destroyRef = inject(DestroyRef);
-    // Reflet lumineux : position du curseur relative à la carte survolée (--mx / --my).
     afterNextRender(() => {
+      // Signale au script de secours d'index.html que l'app a démarré (voir .js .reveal).
+      document.documentElement.classList.add('app-ready');
+      // Reflet lumineux : position du curseur relative à la carte survolée (--mx / --my).
       const onMove = (e: PointerEvent) => {
         const card = (e.target as Element | null)?.closest?.('.card') as HTMLElement | null;
         if (!card) return;
