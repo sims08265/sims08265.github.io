@@ -1,16 +1,11 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, effect, inject, signal } from '@angular/core';
 import { I18nService } from '../core/i18n.service';
-import { MARQUEE, PROFILE } from '../core/portfolio.data';
+import { HERO_FLOATS, MARQUEE, PROFILE, TERMINAL } from '../core/portfolio.data';
 import { IconComponent } from '../shared/icon.component';
 import { NetworkBgComponent } from '../shared/network-bg.component';
 
-/** Script du terminal : chaque commande est tapée, puis sa sortie s'affiche. */
-const SCRIPT: { cmd: string; out: string[] }[] = [
-  { cmd: 'whoami', out: ['<span class="s">gills_simo</span> <span class="m">— engineering student @ IUSJ</span>'] },
-  { cmd: 'cat focus.txt', out: ['<span class="k">data</span> · <span class="k">machine-learning</span> · <span class="k">security</span>'] },
-  { cmd: 'python train.py --model fraud', out: ['<span class="m">loading dataset… fitting classifier…</span>', '<span class="p">✔</span> model ready'] },
-  { cmd: 'nmap -sV opportunities.cm', out: ['<span class="m">PORT     STATE  SERVICE</span>', '443/tcp  <span class="p">open</span>   internship'] },
-];
+/** Script du terminal (portfolio.data.ts) : chaque commande est tapée, puis sa sortie s'affiche. */
+const SCRIPT = TERMINAL.script;
 type Line = { kind: 'cmd' | 'out'; html: string };
 
 @Component({
@@ -26,13 +21,13 @@ type Line = { kind: 'cmd' | 'out'; html: string };
 
       <div class="container hero-grid">
         <div class="intro">
-          <div class="chip status rise" style="--i:0"><span class="live-dot"></span>{{ i18n.t('hero.status') }} · {{ profile.location }}</div>
+          <div class="chip status rise" style="--i:0"><span class="live-dot"></span>{{ i18n.t('hero.status') }}</div>
           <p class="hello mono rise" style="--i:1">{{ i18n.t('hero.hello') }}</p>
           <h1 class="rise" style="--i:2">
             <span class="l1">{{ profile.displayFirst }}</span>
             <span class="l2"><span class="grad">{{ profile.displayLast }}</span><span class="dot">.</span></span>
           </h1>
-          <p class="fullname mono rise" style="--i:3">{{ profile.lastName }} {{ profile.firstNames }}</p>
+          <p class="fullname mono rise" style="--i:3">{{ profile.firstNames }} {{ profile.lastName }}</p>
           <p class="build rise" style="--i:4">
             {{ i18n.t('hero.build') }}<br>
             <span class="typed">{{ typed() }}</span><span class="caret"></span>
@@ -53,7 +48,7 @@ type Line = { kind: 'cmd' | 'out'; html: string };
           <div class="term">
             <div class="term-bar">
               <span class="mac r"></span><span class="mac y"></span><span class="mac g"></span>
-              <span class="term-title">gills&#64;iusj — zsh</span>
+              <span class="term-title">{{ terminalTitle }}</span>
             </div>
             <div class="term-body">
               @for (line of lines(); track $index) {
@@ -66,8 +61,9 @@ type Line = { kind: 'cmd' | 'out'; html: string };
               <div class="ln"><span class="p">❯</span> {{ typing() }}<span class="cursor"></span></div>
             </div>
           </div>
-          <div class="float f1"><span class="icon-tile"><app-icon name="brain" /></span><span><b>Machine Learning</b><small>scikit-learn · pandas</small></span></div>
-          <div class="float f2"><span class="icon-tile"><app-icon name="shield" /></span><span><b>Pentesting</b><small>nmap · metasploit</small></span></div>
+          @for (f of floats; track f.icon; let i = $index) {
+            <div class="float" [class]="'f' + (i + 1)"><span class="icon-tile"><app-icon [name]="f.icon" /></span><span><b>{{ i18n.l(f.title) }}</b><small>{{ f.text }}</small></span></div>
+          }
         </div>
       </div>
 
@@ -87,6 +83,8 @@ export class HeroComponent {
   protected readonly i18n = inject(I18nService);
   protected readonly profile = PROFILE;
   protected readonly marquee = MARQUEE;
+  protected readonly floats = HERO_FLOATS;
+  protected readonly terminalTitle = TERMINAL.title;
   protected readonly typed = signal('');
   protected readonly lines = signal<Line[]>([]);
   protected readonly typing = signal('');

@@ -40,6 +40,8 @@ li::before { content: ""; position: absolute; left: 0; top: .62em; width: 12px; 
 .ring circle { fill: none; stroke-width: 7; }
 .ring .track { stroke: var(--border); }
 .ring .bar { stroke-linecap: round; transition: stroke-dashoffset 1.2s cubic-bezier(.2, .7, .2, 1); }
+.ring .bar.ongoing { transform-origin: 60px 60px; animation: orbit 2.8s linear infinite; }
+@keyframes orbit { to { transform: rotate(360deg); } }
 .ring-label { position: absolute; left: 0; right: 0; bottom: 0; height: 124px; display: grid; place-content: center; text-align: center; }
 .ring-label b { font: 700 1.6rem/1 var(--font-display); color: var(--heading); }
 .ring-label small { font-size: .62rem; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin-top: 4px; }

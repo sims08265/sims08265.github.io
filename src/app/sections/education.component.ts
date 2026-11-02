@@ -52,12 +52,18 @@ const RING = 2 * Math.PI * 52; // circonférence du cercle de progression (r = 5
                   </linearGradient>
                 </defs>
                 <circle cx="60" cy="60" r="52" class="track" />
-                <circle cx="60" cy="60" r="52" class="bar" stroke="url(#ringGrad)"
-                        [attr.stroke-dasharray]="ring" [attr.stroke-dashoffset]="ring * (1 - e.progress / 100)" />
+                <!-- Formation en cours : arc qui tourne au lieu d'un pourcentage inventé -->
+                <circle cx="60" cy="60" r="52" class="bar" [class.ongoing]="e.progress === undefined" stroke="url(#ringGrad)"
+                        [attr.stroke-dasharray]="ring" [attr.stroke-dashoffset]="ring * (1 - (e.progress ?? 22) / 100)" />
               </svg>
               <div class="ring-label">
-                <b>{{ e.progress }}%</b>
-                <small class="mono">{{ e.progress === 100 ? i18n.t('done') : i18n.t('progress') }}</small>
+                @if (e.progress === undefined) {
+                  <b>{{ e.level }}</b>
+                  <small class="mono">{{ i18n.t('ongoing') }}</small>
+                } @else {
+                  <b>{{ e.progress }}%</b>
+                  <small class="mono">{{ e.progress === 100 ? i18n.t('done') : i18n.t('progress') }}</small>
+                }
               </div>
             </div>
           </article>

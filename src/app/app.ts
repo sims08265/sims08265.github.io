@@ -28,6 +28,7 @@ import { ContactComponent } from './sections/contact.component';
     .row .mono b { color: var(--accent); font-weight: 500; }
   `,
   template: `
+    <a href="#main" class="skip-link">{{ i18n.t('skip') }}</a>
     <app-navbar />
     <main id="main">
       <app-hero />
@@ -40,7 +41,7 @@ import { ContactComponent } from './sections/contact.component';
     </main>
     <footer>
       <div class="container">
-        <div class="giant" aria-hidden="true">GILLS SIMO</div>
+        <div class="giant" aria-hidden="true">{{ giant }}</div>
         <div class="row">
           <span>© {{ year }} {{ name }}</span>
           <span class="mono"><b>&lt;/&gt;</b> {{ i18n.t('footer.made') }}</span>
@@ -52,7 +53,8 @@ import { ContactComponent } from './sections/contact.component';
 export class App {
   protected readonly i18n = inject(I18nService);
   protected readonly year = new Date().getFullYear();
-  protected readonly name = `${PROFILE.lastName} ${PROFILE.firstNames}`;
+  protected readonly name = `${PROFILE.firstNames} ${PROFILE.lastName}`;
+  protected readonly giant = `${PROFILE.displayFirst} ${PROFILE.displayLast}`.toUpperCase();
 
   constructor() {
     const destroyRef = inject(DestroyRef);
