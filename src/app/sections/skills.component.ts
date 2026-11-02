@@ -40,7 +40,7 @@ interface Planet { name: string; angle: number; radius: number; outer: boolean; 
                 <app-icon [name]="category().icon" />
                 <b>{{ i18n.l(category().label) }}</b>
               </div>
-              @for (p of planets(); track category().key + p.name) {
+              @for (p of planets(); track category().key + $index) {
                 <!-- Le "track" tourne, chaque bulle est contre-tournée pour rester lisible -->
                 <div class="track" [class.outer]="p.outer">
                   <div class="arm" [style.transform]="'rotate(' + p.angle + 'deg)'">
@@ -55,16 +55,15 @@ interface Planet { name: string; angle: number; radius: number; outer: boolean; 
           </div>
 
           <div class="card list" appReveal="160">
-            <div class="list-head mono"><span>{{ i18n.l(category().label) }}</span><span>lvl</span></div>
-            @for (s of category().items; track category().key + s.name; let i = $index) {
-              <div class="row" [style.--i]="i">
-                <span class="name">{{ s.name }}</span>
-                <span class="cells" [attr.aria-label]="s.level + '%'">
-                  @for (n of cells; track n) { <i [class.on]="n * 10 <= s.level"></i> }
-                </span>
-                <span class="pct mono">{{ s.level }}</span>
-              </div>
-            }
+            <div class="list-head mono"><span>{{ i18n.l(category().label) }}</span><span>{{ category().items.length }}</span></div>
+            <ul>
+              @for (s of category().items; track category().key + $index; let i = $index) {
+                <li class="row" [style.--i]="i">
+                  <span class="idx mono">{{ i < 9 ? '0' : '' }}{{ i + 1 }}</span>
+                  <span class="name">{{ i18n.l(s) }}</span>
+                </li>
+              }
+            </ul>
           </div>
         </div>
       </div>
@@ -74,16 +73,16 @@ interface Planet { name: string; angle: number; radius: number; outer: boolean; 
 export class SkillsComponent {
   protected readonly i18n = inject(I18nService);
   protected readonly categories = SKILLS;
-  protected readonly cells = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   protected readonly selectedKey = signal(SKILLS[0].key);
   protected readonly category = computed(() => SKILLS.find(c => c.key === this.selectedKey()) ?? SKILLS[0]);
 
-  /** Répartit les compétences sur deux orbites (intérieure / extérieure). */
+  /** Répartit les compétences sur deux orbites ; l'extérieure, plus longue, en reçoit davantage. */
   protected readonly planets = computed<Planet[]>(() => {
-    const names = this.category().items.map(i => i.name);
-    const half = Math.ceil(names.length / 2);
+    const names = this.category().items.map(i => this.i18n.l(i));
+    const inner = Math.floor(names.length * 0.4);
     const place = (list: string[], radius: number, outer: boolean, offset: number) =>
       list.map((name, i) => ({ name, radius, outer, angle: offset + (360 / list.length) * i }));
-    return [...place(names.slice(0, half), 27, false, -90), ...place(names.slice(half), 44, true, -50)];
+    // Décalages choisis pour qu'aucune bulle ne se chevauche en position initiale (et sans animation).
+    return [...place(names.slice(0, inner), 27, false, -45), ...place(names.slice(inner), 44, true, -65)];
   });
 }
