@@ -25,7 +25,8 @@ const FR = {
   'badge.online': 'EN LIGNE', 'badge.open': 'stage IA · août 2027',
   'edu.tag': 'education', 'edu.title': 'Mon', 'edu.hl': 'parcours.', 'edu.sub': 'Sélectionnez une étape pour en voir le détail.',
   'skills.tag': 'stack', 'skills.title': 'La boîte', 'skills.hl': 'à outils.', 'skills.sub': 'Choisissez une catégorie — les technologies se mettent en orbite.',
-  'proj.tag': 'projects', 'proj.title': 'Projets', 'proj.hl': 'sélectionnés.', 'proj.sub': 'Data science, mobile et sécurité : trois terrains, une même exigence.',
+  'proj.tag': 'projects', 'proj.title': 'Projets', 'proj.hl': 'sélectionnés.', 'proj.sub': "Un projet de fin d'études, un hackathon, un projet cloud et un client réel.",
+  'proj.private': 'Code privé — démo sur demande',
   'exp.tag': 'experience', 'exp.title': 'Sur le', 'exp.hl': 'terrain.', 'int.title': 'En dehors du code',
   'contact.tag': 'contact', 'contact.big1': 'Un stage, une alternance,', 'contact.big2': 'un projet ? Parlons-en.',
   'contact.sub': 'Écrivez-moi par mail ou utilisez le formulaire ci-dessous.',
@@ -59,7 +60,8 @@ export const UI_TEXT: Record<Lang, Record<UiKey, string>> = {
     'badge.online': 'ONLINE', 'badge.open': 'AI internship · Aug 2027',
     'edu.tag': 'education', 'edu.title': 'My', 'edu.hl': 'journey.', 'edu.sub': 'Select a step to see the details.',
     'skills.tag': 'stack', 'skills.title': 'The', 'skills.hl': 'toolbox.', 'skills.sub': 'Pick a category — the technologies go into orbit.',
-    'proj.tag': 'projects', 'proj.title': 'Selected', 'proj.hl': 'projects.', 'proj.sub': 'Data science, mobile and security: three fields, one standard.',
+    'proj.tag': 'projects', 'proj.title': 'Selected', 'proj.hl': 'projects.', 'proj.sub': 'A final-year project, a hackathon, a cloud project and a real client.',
+    'proj.private': 'Code private — demo on request',
     'exp.tag': 'experience', 'exp.title': 'In the', 'exp.hl': 'field.', 'int.title': 'Beyond code',
     'contact.tag': 'contact', 'contact.big1': 'An internship, an apprenticeship,', 'contact.big2': "a project? Let's talk.",
     'contact.sub': 'Email me or use the form below.',
@@ -139,8 +141,8 @@ export const HERO_FLOATS: { icon: IconName; title: Localized; text: string }[] =
 ];
 
 /** Défilement de technologies sous le hero. */
-export const MARQUEE = ['Python', 'Java', 'JavaScript', 'SQL', 'C / C++', 'Spring Boot', 'Angular', 'React Native',
-  'Node.js', 'NestJS', 'PostgreSQL', 'Pandas', 'Scikit-learn', 'Streamlit', 'Prophet', 'Nmap', 'Metasploit', 'GitLab'];
+export const MARQUEE = ['Python', 'FastAPI', 'Llama 3', 'Ollama', 'PaddleOCR', 'scikit-learn', 'Pandas', 'NumPy', 'NetworkX',
+  'Docker', 'GitHub Actions', 'AWS', 'Prometheus', 'Grafana', 'PostgreSQL', 'React Native', 'Angular', 'NestJS'];
 
 /* ================= Formation ================= */
 export interface Education {
@@ -182,57 +184,101 @@ export const EDUCATION: Education[] = [
 ];
 
 /* ================= Compétences ================= */
-// Les niveaux (%) sont indicatifs : à ajuster.
-export interface SkillCategory { key: string; icon: IconName; label: Localized; items: { name: string; level: number }[]; }
-const s = (name: string, level: number) => ({ name, level });
+// Pas de niveau ni de pourcentage : uniquement les noms (auto-évaluations non vérifiables).
+export interface SkillCategory { key: string; icon: IconName; label: Localized; items: Localized[]; }
 export const SKILLS: SkillCategory[] = [
-  { key: 'languages', icon: 'code', label: { fr: 'Langages', en: 'Languages' },
-    items: [s('Python', 88), s('Java', 78), s('JavaScript', 80), s('SQL', 82), s('C', 70), s('C++', 68)] },
-  { key: 'frameworks', icon: 'layers', label: { fr: 'Frameworks', en: 'Frameworks' },
-    items: [s('Spring Boot', 72), s('Angular', 70), s('React Native', 78), s('Node.js', 72), s('NestJS', 68)] },
-  { key: 'data', icon: 'brain', label: { fr: 'Machine Learning', en: 'Machine Learning' },
-    items: [s('NumPy', 85), s('Pandas', 86), s('Scikit-learn', 80), s('Matplotlib', 82), s('Plotly', 75), s('Seaborn', 78), s('Streamlit', 74), s('Prophet', 65)] },
-  { key: 'security', icon: 'shield', label: { fr: 'Pentesting', en: 'Pentesting' },
-    items: [s('Nmap', 75), s('Metasploit', 65), s('Cryptographie', 70)] },
-  { key: 'tools', icon: 'terminal', label: { fr: 'Outils', en: 'Tools' },
-    items: [s('Git / GitHub', 85), s('GitLab', 78), s('VS Code', 90), s('IntelliJ', 80), s('MySQL Workbench', 78), s('Jupyter', 88), s('PostgreSQL', 74)] },
+  { key: 'ai', icon: 'brain', label: { fr: 'IA & Data', en: 'AI & Data' },
+    items: [{ fr: 'Machine Learning', en: 'Machine learning' }, same('NLP'), same('LLMs (Llama 3)'), same('Ollama'),
+      same('Prompt engineering'), same('OCR (PaddleOCR)'), { fr: "Détection d'anomalies", en: 'Anomaly detection' },
+      same('scikit-learn'), same('Pandas'), same('NumPy'), same('NetworkX')] },
+  { key: 'deploy', icon: 'layers', label: { fr: 'Déploiement', en: 'Deployment' },
+    items: ['FastAPI', 'Docker / Compose', 'AWS (EC2, S3, ECR)', 'GitHub Actions', 'Prometheus', 'Grafana', 'PostgreSQL', 'MySQL'].map(same) },
+  { key: 'code', icon: 'code', label: { fr: 'Programmation', en: 'Programming' },
+    items: ['Python', 'SQL', 'Java', 'JavaScript / TypeScript', 'C / C++', 'React Native', 'Angular', 'NestJS', 'Git'].map(same) },
 ];
 
 /* ================= Projets ================= */
+// Dépôts privés : jamais de lien vers le code, la carte affiche « Code privé — démo sur demande ».
 export interface Project {
-  art: 'fraud' | 'stock' | 'crypto'; category: Localized;
-  title: Localized; description: Localized; tags: string[];
+  art: 'trusty' | 'matching' | 'vault' | 'stock';
+  /** featured = pleine largeur en tête, small = carte compacte. */
+  size?: 'featured' | 'small';
+  category: Localized; title: Localized; subtitle?: Localized;
+  period?: string; context: Localized;
+  description?: Localized; highlights?: Localized<string[]>;
+  tags: string[];
 }
 export const PROJECTS: Project[] = [
   {
-    art: 'fraud',
-    category: { fr: 'Machine Learning', en: 'Machine Learning' },
-    title: { fr: 'Détection de fraudeurs par classification', en: 'Fraud detection classifier' },
-    description: {
-      fr: "Un modèle de classification qui repère les fraudeurs dans un jeu de données : exploration, préparation des variables, entraînement puis évaluation des performances.",
-      en: 'A classification model that spots fraudsters in a dataset: exploration, feature preparation, training and performance evaluation.',
+    art: 'trusty', size: 'featured',
+    category: { fr: "Projet de fin d'études", en: 'Final-year project' },
+    title: same('TRUSTY'),
+    subtitle: { fr: 'Identité économique pour les commerçants informels', en: 'Economic identity for informal traders' },
+    period: '08/2026 – 10/2026',
+    context: { fr: 'IUSJ · équipe de 4 · lead developer, environ 90 % des commits', en: 'IUSJ · team of 4 · lead developer, about 90% of the commits' },
+    highlights: {
+      fr: [
+        "Backend avec un ledger d'événements append-only et 8 moteurs métier.",
+        'Trust Score explicable, à base de règles (0–100, 6 sous-indices, règles anti-manipulation), partagé avec les banques uniquement avec le consentement du commerçant.',
+        'App mobile offline-first : ledger local chiffré (SQLCipher), synchronisation sans perte, saisie vocale hors ligne (Vosk).',
+        'Sécurité : revue OWASP ASVS / MASVS, scans Trivy et ZAP en CI, sauvegardes chiffrées. Release v0.9.2.',
+      ],
+      en: [
+        'Backend with an append-only event ledger and 8 business engines.',
+        "Explainable, rule-based Trust Score (0–100, 6 sub-indices, anti-manipulation rules), shared with banks only with the trader's consent.",
+        'Offline-first mobile app: encrypted local ledger (SQLCipher), lossless sync, offline voice input (Vosk).',
+        'Security: OWASP ASVS / MASVS review, Trivy and ZAP scans in CI, encrypted backups. Release v0.9.2.',
+      ],
     },
-    tags: ['Python', 'Pandas', 'Scikit-learn', 'Matplotlib', 'Seaborn'],
+    tags: ['FastAPI', 'PostgreSQL', 'React Native / Expo', 'Vosk', 'OAuth 2.0', 'GitHub Actions'],
   },
   {
-    art: 'stock',
-    category: { fr: 'Développement mobile', en: 'Mobile development' },
-    title: { fr: 'App mobile de gestion de stocks', en: 'Inventory management app' },
+    art: 'matching',
+    category: same('Hackathon'),
+    title: { fr: 'Moteur de matching talents–emplois', en: 'Talent–Job Matching Engine' },
+    period: '04/2026',
+    context: { fr: 'HACKVERSE, Polytechnique Yaoundé · lead backend et algorithmes', en: 'HACKVERSE, Polytechnique Yaounde · backend and algorithm lead' },
+    highlights: {
+      fr: [
+        'Matching sur un graphe de compétences (Gale–Shapley), étendu au fil de 10 défis en direct.',
+        "Recommandations explicables, correction des biais liés à l'école et à la localisation, inférence de compétences pour les candidats sans CV.",
+      ],
+      en: [
+        'Skills-graph matching (Gale–Shapley), extended across 10 live challenges.',
+        'Explainable recommendations, school and location bias correction, skill inference for candidates without a CV.',
+      ],
+    },
+    tags: ['Python', 'FastAPI', 'NetworkX', 'Angular', 'Docker'],
+  },
+  {
+    art: 'vault',
+    category: { fr: 'Projet cloud', en: 'Cloud project' },
+    title: same('SecureAI Vault'),
+    subtitle: { fr: 'Coffre-fort de secrets Zero-Trust sur AWS', en: 'Zero-Trust secrets vault on AWS' },
+    period: '02/2026 – 05/2026',
+    context: { fr: 'En binôme', en: 'Pair work' },
+    highlights: {
+      fr: [
+        'Vaultwarden en Docker rootless, HTTPS, WAF (ModSecurity) et réseaux isolés.',
+        "Pipeline CI/CD, monitoring et module de détection d'intrusion (Isolation Forest) avec alertes e-mail.",
+      ],
+      en: [
+        'Vaultwarden with rootless Docker, HTTPS, a WAF (ModSecurity) and isolated networks.',
+        'CI/CD pipeline, monitoring and an Isolation Forest intrusion-detection module with e-mail alerts.',
+      ],
+    },
+    tags: ['AWS EC2', 'Docker', 'Nginx', 'Prometheus', 'Grafana', 'Loki', 'GitHub Actions', 'scikit-learn'],
+  },
+  {
+    art: 'stock', size: 'small',
+    category: { fr: 'Mobile · client réel', en: 'Mobile · real client' },
+    title: { fr: 'App de gestion de stocks', en: 'Stock-management app' },
+    context: { fr: 'Pour un client réel', en: 'For a real client' },
     description: {
-      fr: 'Application mobile React Native, backend NestJS et base PostgreSQL — de la conception au développement.',
-      en: 'React Native mobile app with a NestJS backend and PostgreSQL — from design to development.',
+      fr: 'Application mobile React Native, backend NestJS et base PostgreSQL, de la conception au développement.',
+      en: 'React Native mobile app with a NestJS backend and PostgreSQL, from design to development.',
     },
     tags: ['React Native', 'NestJS', 'PostgreSQL'],
-  },
-  {
-    art: 'crypto',
-    category: { fr: 'Cybersécurité', en: 'Cybersecurity' },
-    title: { fr: 'Dans les coulisses du chiffrement WhatsApp', en: "Inside WhatsApp's encryption" },
-    description: {
-      fr: 'Analyse complète du chiffrement de bout en bout de WhatsApp et démonstration interactive via une application web.',
-      en: "Full analysis of WhatsApp's end-to-end encryption with an interactive web demo.",
-    },
-    tags: ['Cryptographie', 'Signal Protocol', 'JavaScript'],
   },
 ];
 

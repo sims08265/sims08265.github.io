@@ -5,54 +5,67 @@ text.h { font-family: var(--font-display); font-weight: 700; font-size: 15px; fi
 text.small { font-size: 13px; }
 text.dim, .dim { fill: var(--muted); }
 
-/* ---------- Fraude ---------- */
-.axis { stroke: var(--border); stroke-width: 1; }
-.axis.strong { stroke: var(--border-strong); }
-.region { fill: color-mix(in srgb, var(--danger) 7%, transparent); }
-.boundary { fill: none; stroke: var(--danger); stroke-width: 1.5; stroke-dasharray: 6 6; animation: dash 1.5s linear infinite; }
-.legit { fill: var(--accent); opacity: .8; }
-.fraud { fill: var(--danger); }
-.fraud-ring { fill: none; stroke: var(--danger); stroke-width: 1.5; transform-box: fill-box; transform-origin: center; animation: ping 2s ease-out infinite; }
-.legend rect { fill: var(--card-solid); stroke: var(--border-strong); }
-@keyframes ping { from { transform: scale(.8); opacity: 1; } to { transform: scale(2.6); opacity: 0; } }
+/* ---------- Commun ---------- */
+.item { fill: var(--card-solid); stroke: var(--border); }
+.txt { fill: var(--heading); opacity: .7; }
+.txt.dim { opacity: .3; }
+.node { fill: var(--card-solid); stroke: var(--border-strong); }
+.wire { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 4 6; opacity: .7; animation: dash 1.2s linear infinite; }
+.bar { fill: var(--accent); transform-box: fill-box; transform-origin: bottom; animation: grow 2.6s ease-in-out infinite alternate; }
+.bar:nth-of-type(even) { fill: var(--accent-2); }
+.tag rect { fill: color-mix(in srgb, var(--accent) 14%, transparent); stroke: color-mix(in srgb, var(--accent) 45%, transparent); }
+.tag text { fill: var(--accent); font-weight: 600; letter-spacing: 1px; }
 @keyframes dash { to { stroke-dashoffset: -24; } }
+@keyframes grow { from { transform: scaleY(.45); } }
+@keyframes blink { 50% { opacity: .2; } }
+@keyframes ping { from { transform: scale(.8); opacity: 1; } to { transform: scale(2.6); opacity: 0; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- TRUSTY ---------- */
+.dot { fill: var(--accent); }
+.chain { fill: none; stroke: var(--border-strong); stroke-width: 1.5; stroke-dasharray: 2 3; }
+.append { animation: append 3.4s ease-in-out infinite; }
+@keyframes append { 0% { opacity: 0; transform: translateY(-14px); } 25%, 85% { opacity: 1; transform: none; } 100% { opacity: 1; } }
+.gauge-track { fill: none; stroke: var(--border); stroke-width: 14; stroke-linecap: round; }
+.gauge-fill {
+  fill: none; stroke: var(--accent); stroke-width: 14; stroke-linecap: round; stroke-dasharray: 78 100;
+  filter: drop-shadow(0 0 8px rgba(var(--accent-rgb), .45)); animation: gauge 3.2s ease-in-out infinite alternate;
+}
+@keyframes gauge { from { stroke-dasharray: 46 100; } }
+
+/* ---------- Matching ---------- */
+.edge { fill: none; stroke: var(--border-strong); stroke-width: 1.2; }
+.edge.match { stroke: var(--accent); stroke-width: 1.8; stroke-dasharray: 4 6; animation: dash 1.2s linear infinite; }
+.device { fill: var(--card-solid); stroke: var(--border-strong); stroke-width: 1.5; }
+.person { fill: none; stroke: var(--heading); stroke-width: 1.6; stroke-linecap: round; }
+.skill { fill: var(--card-solid); stroke: color-mix(in srgb, var(--accent-2) 55%, transparent); }
+
+/* ---------- Vault ---------- */
+.link { stroke: var(--border-strong); stroke-width: 2; }
+.link.flow { stroke: var(--accent); stroke-dasharray: 3 12; stroke-linecap: round; animation: dash 1s linear infinite; }
+.waf path { fill: color-mix(in srgb, var(--accent) 14%, var(--card-solid)); stroke: var(--accent); stroke-width: 1.5; }
+.waf text { fill: var(--accent); font-size: 9px; font-weight: 600; }
+.zone { fill: color-mix(in srgb, var(--accent) 4%, transparent); stroke: var(--border-strong); stroke-dasharray: 5 6; }
+.vault { fill: var(--card-solid); stroke: var(--border-strong); stroke-width: 1.5; }
+.hinge { fill: var(--border-strong); }
+.dial-ring { fill: none; stroke: var(--accent); stroke-width: 2; opacity: .55; }
+.dial { transform-box: fill-box; transform-origin: center; animation: spin 10s linear infinite; }
+.tick { stroke: var(--accent); stroke-width: 2; stroke-linecap: round; }
+.hub { fill: var(--accent); }
+.series { fill: none; stroke: var(--accent-2); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.anomaly { fill: var(--danger); }
+.anomaly-ring { fill: none; stroke: var(--danger); stroke-width: 1.5; transform-box: fill-box; transform-origin: center; animation: ping 2s ease-out infinite; }
+.alert rect:first-child { fill: var(--card-solid); stroke: color-mix(in srgb, var(--danger) 50%, transparent); }
+.alert .env { fill: none; stroke: var(--danger); stroke-width: 1.5; }
 
 /* ---------- Stock ---------- */
 .phone { fill: var(--card-solid); stroke: var(--border-strong); stroke-width: 1.5; }
 .screen { fill: var(--bg-soft); }
 .notch { fill: var(--border-strong); }
-.item { fill: var(--card-solid); stroke: var(--border); }
 .thumb { fill: color-mix(in srgb, var(--accent-2) 35%, transparent); }
-.txt { fill: var(--heading); opacity: .7; }
-.txt.dim { opacity: .3; }
 .pill { fill: color-mix(in srgb, var(--accent) 40%, transparent); }
 .pill.warn { fill: color-mix(in srgb, var(--danger) 55%, transparent); }
 .accent-fill { fill: var(--accent); }
-.bar { fill: var(--accent); transform-box: fill-box; transform-origin: bottom; animation: grow 2.6s ease-in-out infinite alternate; }
-.bar:nth-of-type(even) { fill: var(--accent-2); }
-@keyframes grow { from { transform: scaleY(.45); } }
-.wire { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 4 6; opacity: .7; animation: dash 1.2s linear infinite; }
-.node { fill: var(--card-solid); stroke: var(--border-strong); }
 .led { fill: var(--accent); animation: blink 1.4s steps(1) infinite; }
 .db { fill: var(--card-solid); stroke: var(--accent-2); stroke-width: 1.5; }
 .db-line { fill: none; stroke: var(--accent-2); stroke-width: 1.5; opacity: .6; }
-@keyframes blink { 50% { opacity: .2; } }
-
-/* ---------- Chiffrement ---------- */
-.link { stroke: var(--border-strong); stroke-width: 2; }
-.link.flow { stroke: var(--accent); stroke-dasharray: 3 12; stroke-linecap: round; animation: dash 1s linear infinite; }
-.packet { animation: travel 4s cubic-bezier(.6, 0, .4, 1) infinite; }
-.packet rect { fill: var(--card-solid); stroke: var(--accent); }
-.packet text { fill: var(--accent); font-size: 10px; }
-@keyframes travel { 0% { transform: translate(150px, 80px); opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } 100% { transform: translate(330px, 80px); opacity: 0; } }
-.halo { fill: none; stroke: color-mix(in srgb, var(--accent) 25%, transparent); stroke-dasharray: 2 5; }
-.device { fill: var(--card-solid); stroke: var(--border-strong); stroke-width: 1.5; }
-.person { fill: none; stroke: var(--heading); stroke-width: 2; stroke-linecap: round; }
-.key-bg { fill: var(--accent); }
-.key { fill: none; stroke: var(--on-accent); stroke-width: 2; stroke-linecap: round; }
-.lock-bg { fill: var(--bg); stroke: var(--accent); stroke-width: 1.5; filter: drop-shadow(0 0 10px rgba(var(--accent-rgb), .5)); }
-.lock { fill: var(--accent); }
-.lock-shackle { fill: none; stroke: var(--accent); stroke-width: 2.2; }
-.cipher { fill: var(--accent-2); letter-spacing: 2px; }
-.tag-e2e rect { fill: color-mix(in srgb, var(--accent) 14%, transparent); stroke: color-mix(in srgb, var(--accent) 45%, transparent); }
-.tag-e2e text { fill: var(--accent); font-weight: 600; letter-spacing: 2px; }

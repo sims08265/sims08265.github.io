@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { I18nService } from '../core/i18n.service';
 import { PROJECTS } from '../core/portfolio.data';
+import { IconComponent } from '../shared/icon.component';
 import { ProjectArtComponent } from '../shared/project-art.component';
 import { RevealDirective } from '../shared/reveal.directive';
 import { SectionHeadComponent } from '../shared/section-head.component';
 
 @Component({
   selector: 'app-projects',
-  imports: [ProjectArtComponent, RevealDirective, SectionHeadComponent],
+  imports: [IconComponent, ProjectArtComponent, RevealDirective, SectionHeadComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './projects.component.css',
   template: `
@@ -17,7 +18,7 @@ import { SectionHeadComponent } from '../shared/section-head.component';
                           [highlight]="i18n.t('proj.hl')" [sub]="i18n.t('proj.sub')" />
         <div class="grid">
           @for (p of projects; track p.art; let i = $index) {
-            <article class="card project" [class.featured]="i === 0" [appReveal]="i * 120">
+            <article class="card project" [class.featured]="p.size === 'featured'" [class.small]="p.size === 'small'" [appReveal]="i * 120">
               <div class="art" [class]="'art--' + p.art">
                 <app-project-art [art]="p.art" />
               </div>
@@ -27,10 +28,16 @@ import { SectionHeadComponent } from '../shared/section-head.component';
                   <span class="chip">{{ i18n.l(p.category) }}</span>
                 </div>
                 <h3>{{ i18n.l(p.title) }}</h3>
-                <p>{{ i18n.l(p.description) }}</p>
+                @if (p.subtitle) { <p class="subtitle">{{ i18n.l(p.subtitle) }}</p> }
+                <p class="context mono">@if (p.period) { <b>{{ p.period }}</b> · }{{ i18n.l(p.context) }}</p>
+                @if (p.description) { <p class="desc">{{ i18n.l(p.description) }}</p> }
+                @if (p.highlights) {
+                  <ul class="highlights">@for (h of i18n.l(p.highlights); track $index) { <li>{{ h }}</li> }</ul>
+                }
                 <ul class="tags">
                   @for (tag of p.tags; track tag) { <li>{{ tag }}</li> }
                 </ul>
+                <p class="private mono"><app-icon name="lock" />{{ i18n.t('proj.private') }}</p>
               </div>
             </article>
           }
