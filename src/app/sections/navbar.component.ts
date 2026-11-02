@@ -16,7 +16,7 @@ import { IconComponent } from '../shared/icon.component';
       <nav class="pill" aria-label="Navigation">
         <a href="#accueil" class="logo" aria-label="Accueil">
           <span class="mark">{{ profile.initials }}</span>
-          <span class="word">gills<b>.</b>simo</span>
+          <span class="word">{{ logo[0] }}<b>.</b>{{ logo[1] }}</span>
         </a>
         <ul class="links" [class.open]="menuOpen()">
           @for (link of links; track link.id; let i = $index) {
@@ -51,6 +51,7 @@ export class NavbarComponent {
   protected readonly i18n = inject(I18nService);
   protected readonly theme = inject(ThemeService);
   protected readonly profile = PROFILE;
+  protected readonly logo = [PROFILE.displayFirst, PROFILE.displayLast].map(s => s.toLowerCase());
 
   protected readonly links: { id: string; key: UiKey }[] = [
     { id: 'apropos', key: 'nav.about' },

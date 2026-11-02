@@ -19,7 +19,7 @@ import { SectionHeadComponent } from '../shared/section-head.component';
           <!-- Badge d'accès -->
           <article class="card badge" appReveal>
             <div class="lanyard"></div>
-            <div class="badge-top mono"><span>IUSJ · ACCESS</span><span class="live"><span class="live-dot"></span>ONLINE</span></div>
+            <div class="badge-top mono"><span>{{ profile.badgeTop }}</span><span class="live"><span class="live-dot"></span>{{ i18n.t('badge.online') }}</span></div>
             <div class="photo">
               <span>{{ profile.initials }}</span>
               <i class="scan"></i>
@@ -28,8 +28,8 @@ import { SectionHeadComponent } from '../shared/section-head.component';
             <h3>{{ profile.lastName }}<br><span>{{ profile.firstNames }}</span></h3>
             <p class="role">{{ i18n.t('badge.role') }}</p>
             <dl class="mono">
-              <div><dt>{{ i18n.t('badge.level') }}</dt><dd>ING-4 / 5</dd></div>
-              <div><dt>{{ i18n.t('badge.loc') }}</dt><dd>{{ profile.location }}</dd></div>
+              <div><dt>{{ i18n.t('badge.level') }}</dt><dd>{{ profile.level }}</dd></div>
+              <div><dt>{{ i18n.t('badge.loc') }}</dt><dd>{{ i18n.l(profile.location) }}</dd></div>
               <div><dt>{{ i18n.t('badge.status') }}</dt><dd class="ok">{{ i18n.t('badge.open') }}</dd></div>
             </dl>
             <div class="barcode"></div>
@@ -40,6 +40,7 @@ import { SectionHeadComponent } from '../shared/section-head.component';
             <span class="quote">“</span>
             <p [innerHTML]="i18n.t('about.p1')"></p>
             <p [innerHTML]="i18n.t('about.p2')"></p>
+            <p [innerHTML]="i18n.t('about.p3')"></p>
           </article>
 
           <!-- Chiffres -->
@@ -68,7 +69,7 @@ import { SectionHeadComponent } from '../shared/section-head.component';
           <!-- Langues -->
           <article class="card langs" appReveal="200">
             <h4 class="mono">{{ i18n.t('about.langs') }}</h4>
-            @for (lang of profile.languages; track lang.level) {
+            @for (lang of profile.languages; track $index) {
               <div class="lang">
                 <div class="lang-top"><b>{{ i18n.l(lang.name) }}</b><small class="mono">{{ i18n.l(lang.note) }}</small></div>
                 <div class="meter" [attr.aria-label]="lang.level + '/5'">
@@ -85,20 +86,26 @@ import { SectionHeadComponent } from '../shared/section-head.component';
 export class AboutComponent {
   protected readonly i18n = inject(I18nService);
   protected readonly profile = PROFILE;
-  protected readonly counts = signal(PROFILE.stats.map(() => 0));
-  private interval?: ReturnType<typeof setInterval>;
+  // Valeurs finales par défaut : le HTML pré-rendu et la page sans JS affichent les vrais chiffres.
+  protected readonly counts = signal(PROFILE.stats.map(s => s.value));
+  private frame = 0;
 
   constructor() {
-    inject(DestroyRef).onDestroy(() => clearInterval(this.interval));
+    inject(DestroyRef).onDestroy(() => cancelAnimationFrame(this.frame));
   }
 
+  /** Compte de 0 à la valeur finale en ~1,4 s (durée indépendante de la valeur). */
   protected countUp(): void {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const targets = PROFILE.stats.map(s => s.value);
-    clearInterval(this.interval);
-    this.interval = setInterval(() => {
-      const next = this.counts().map((v, i) => Math.min(v + 1, targets[i]));
-      this.counts.set(next);
-      if (next.every((v, i) => v === targets[i])) clearInterval(this.interval);
-    }, 140);
+    const start = performance.now();
+    const tick = (now: number) => {
+      const t = Math.min((now - start) / 1400, 1);
+      const eased = 1 - (1 - t) ** 3;
+      this.counts.set(targets.map(v => Math.round(v * eased)));
+      if (t < 1) this.frame = requestAnimationFrame(tick);
+    };
+    cancelAnimationFrame(this.frame);
+    this.frame = requestAnimationFrame(tick);
   }
 }

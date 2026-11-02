@@ -20,9 +20,16 @@
 h3 { font: 600 1.25rem/1.25 var(--font-display); color: var(--heading); letter-spacing: -.015em; }
 .kind { font: 500 .68rem var(--font-mono); text-transform: uppercase; letter-spacing: .12em; padding: 4px 10px; border-radius: 999px; color: var(--muted); border: 1px solid var(--border); }
 .kind.pro { color: var(--accent); border-color: rgba(var(--accent-rgb), .35); background: rgba(var(--accent-rgb), .08); }
+.node.hack { color: var(--accent-2); border-color: rgba(var(--accent-2-rgb), .5); }
+.kind.hack { color: var(--accent-2); border-color: rgba(var(--accent-2-rgb), .35); background: rgba(var(--accent-2-rgb), .08); }
 .org { margin-top: 4px; color: var(--muted); }
-ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-ul li { font-size: .85rem; padding: 4px 12px; border-radius: 8px; background: var(--border); color: var(--text); }
+.summary { margin-top: 14px; color: var(--heading); font-style: italic; }
+.details { list-style: none; display: grid; gap: 10px; margin-top: 14px; }
+.details li { position: relative; padding-left: 24px; font-size: .95rem; }
+.details li::before { content: ""; position: absolute; left: 0; top: .72em; width: 12px; height: 2px; background: var(--accent); border-radius: 2px; }
+.details li ::ng-deep strong { color: var(--heading); font-weight: 600; }
+.chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.chips li { font-size: .85rem; padding: 4px 12px; border-radius: 8px; background: var(--border); color: var(--text); }
 
 .beyond {
   margin-top: 70px; padding: 30px 32px; border-radius: var(--radius); border: 1px dashed var(--border-strong);

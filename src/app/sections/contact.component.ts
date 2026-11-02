@@ -34,11 +34,15 @@ import { RevealDirective } from '../shared/reveal.directive';
               </a>
               <a class="card link" [href]="profile.linkedin" target="_blank" rel="noopener">
                 <span class="icon-tile"><app-icon brand="linkedin" /></span>
-                <span><small class="mono">LinkedIn</small>Gills SIMO</span>
+                <span><small class="mono">LinkedIn</small>{{ profile.linkedinHandle }}</span>
+              </a>
+              <a class="card link" [href]="profile.cv" download>
+                <span class="icon-tile"><app-icon name="file" /></span>
+                <span><small class="mono">{{ i18n.t('nav.cv') }}</small>{{ i18n.t('contact.cvFile') }}</span>
               </a>
               <div class="card link">
                 <span class="icon-tile"><app-icon name="pin" /></span>
-                <span><small class="mono">{{ i18n.t('contact.loc') }}</small>{{ profile.location }}</span>
+                <span><small class="mono">{{ i18n.t('contact.loc') }}</small>{{ i18n.l(profile.location) }}</span>
               </div>
             </div>
           </div>
@@ -48,12 +52,12 @@ import { RevealDirective } from '../shared/reveal.directive';
             <div class="row2">
               <label class="field"><span>{{ i18n.t('form.name') }}</span>
                 <input name="name" [(ngModel)]="model.name" required maxlength="80" autocomplete="name"></label>
-              <label class="field"><span>Email</span>
+              <label class="field"><span>{{ i18n.t('form.email') }}</span>
                 <input name="email" type="email" [(ngModel)]="model.email" required email maxlength="120" autocomplete="email"></label>
             </div>
             <label class="field"><span>{{ i18n.t('form.subject') }}</span>
               <input name="subject" [(ngModel)]="model.subject" required maxlength="120"></label>
-            <label class="field"><span>Message</span>
+            <label class="field"><span>{{ i18n.t('form.message') }}</span>
               <textarea name="message" [(ngModel)]="model.message" required maxlength="2000" rows="5"></textarea></label>
             <button class="btn btn-primary" type="submit" [disabled]="f.invalid">
               {{ i18n.t('form.send') }} <app-icon class="slide" name="send" />
