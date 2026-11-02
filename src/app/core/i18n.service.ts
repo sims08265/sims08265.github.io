@@ -1,4 +1,4 @@
-import { Injectable, effect, signal } from '@angular/core';
+import { DOCUMENT, Injectable, effect, inject, signal } from '@angular/core';
 import { Lang, Localized, UI_TEXT, UiKey } from './portfolio.data';
 
 @Injectable({ providedIn: 'root' })
@@ -6,9 +6,10 @@ export class I18nService {
   readonly lang = signal<Lang>(this.restore());
 
   constructor() {
+    const root = inject(DOCUMENT).documentElement;
     effect(() => {
       const lang = this.lang();
-      document.documentElement.lang = lang;
+      root.lang = lang;
       try { localStorage.setItem('lang', lang); } catch { /* storage unavailable */ }
     });
   }
