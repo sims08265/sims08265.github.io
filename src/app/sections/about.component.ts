@@ -72,7 +72,7 @@ import { SectionHeadComponent } from '../shared/section-head.component';
             @for (lang of profile.languages; track $index) {
               <div class="lang">
                 <div class="lang-top"><b>{{ i18n.l(lang.name) }}</b><small class="mono">{{ i18n.l(lang.note) }}</small></div>
-                <div class="meter" [attr.aria-label]="lang.level + '/5'">
+                <div class="meter" aria-hidden="true">
                   @for (n of [1, 2, 3, 4, 5]; track n) { <i [class.on]="n <= lang.level"></i> }
                 </div>
               </div>

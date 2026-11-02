@@ -22,7 +22,7 @@ import { RevealDirective } from '../shared/reveal.directive';
           <div class="left" appReveal="180">
             <div class="mail-row">
               <a class="mail" [href]="'mailto:' + profile.email">{{ profile.email }}<app-icon name="arrowUpRight" /></a>
-              <button class="copy" (click)="copy()" [attr.aria-label]="i18n.t('contact.copy')">
+              <button class="copy" type="button" (click)="copy()">
                 <app-icon [name]="copied() ? 'check' : 'copy'" />
                 <span>{{ copied() ? i18n.t('contact.copied') : i18n.t('contact.copy') }}</span>
               </button>
@@ -62,7 +62,20 @@ import { RevealDirective } from '../shared/reveal.directive';
             <button class="btn btn-primary" type="submit" [disabled]="f.invalid">
               {{ i18n.t('form.send') }} <app-icon class="slide" name="send" />
             </button>
-            @if (sent()) { <p class="msg" aria-live="polite"><app-icon name="check" />{{ i18n.t('form.ok') }}</p> }
+            <!-- Toujours présent pour que les lecteurs d'écran annoncent le message -->
+            <div class="status" aria-live="polite">
+              @if (sent()) {
+                <p class="msg"><app-icon name="check" />{{ i18n.t('form.ok') }}</p>
+                <p class="fallback">
+                  {{ i18n.t('form.fallback') }}
+                  <a [href]="'mailto:' + profile.email">{{ profile.email }}</a>
+                  <button class="copy" type="button" (click)="copy()">
+                    <app-icon [name]="copied() ? 'check' : 'copy'" />
+                    <span>{{ copied() ? i18n.t('contact.copied') : i18n.t('contact.copy') }}</span>
+                  </button>
+                </p>
+              }
+            </div>
           </form>
         </div>
       </div>

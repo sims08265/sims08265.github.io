@@ -101,13 +101,18 @@ export class NetworkBgComponent {
       });
 
       const onResize = () => { resize(); if (reduce) draw(); };
-      readColors(); resize(); draw();
-      io.observe(host);
-      addEventListener('resize', onResize);
-      addEventListener('pointermove', onMove, { passive: true });
-      document.addEventListener('pointerleave', onLeave);
+      // Démarré quand le navigateur est libre, pour ne pas alourdir le démarrage de la page.
+      const start = () => {
+        readColors(); resize(); draw();
+        io.observe(host);
+        addEventListener('resize', onResize);
+        addEventListener('pointermove', onMove, { passive: true });
+        document.addEventListener('pointerleave', onLeave);
+      };
+      const idle = 'requestIdleCallback' in window ? requestIdleCallback(start, { timeout: 2500 }) : setTimeout(start, 1200);
 
       destroyRef.onDestroy(() => {
+        if ('cancelIdleCallback' in window) cancelIdleCallback(idle as number); else clearTimeout(idle);
         cancelAnimationFrame(raf); io.disconnect();
         removeEventListener('resize', onResize);
         removeEventListener('pointermove', onMove);

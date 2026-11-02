@@ -38,9 +38,9 @@ const ALL_LINES: Line[] = SCRIPT.flatMap(s => [{ kind: 'cmd' as const, html: s.c
             <a class="btn btn-primary" href="#projets">{{ i18n.t('hero.cta1') }} <app-icon class="slide" name="arrow" /></a>
             <a class="btn btn-ghost" [href]="profile.cv" download><app-icon name="download" /> {{ i18n.t('hero.cta2') }}</a>
             <div class="socials">
-              <a [href]="profile.github" target="_blank" rel="noopener" aria-label="GitHub"><app-icon brand="github" /></a>
-              <a [href]="profile.linkedin" target="_blank" rel="noopener" aria-label="LinkedIn"><app-icon brand="linkedin" /></a>
-              <a [href]="'mailto:' + profile.email" aria-label="Email"><app-icon brand="mail" /></a>
+              <a [href]="profile.github" target="_blank" rel="noopener"><app-icon brand="github" /><span class="sr-only">GitHub</span></a>
+              <a [href]="profile.linkedin" target="_blank" rel="noopener"><app-icon brand="linkedin" /><span class="sr-only">LinkedIn</span></a>
+              <a [href]="'mailto:' + profile.email"><app-icon brand="mail" /><span class="sr-only">{{ i18n.t('form.email') }}</span></a>
             </div>
           </div>
         </div>
@@ -68,7 +68,7 @@ const ALL_LINES: Line[] = SCRIPT.flatMap(s => [{ kind: 'cmd' as const, html: s.c
         </div>
       </div>
 
-      <a href="#apropos" class="scroll-hint mono" aria-label="Défiler"><span class="mouse"><i></i></span>{{ i18n.t('hero.scroll') }}</a>
+      <a href="#apropos" class="scroll-hint mono"><span class="mouse"><i></i></span>{{ i18n.t('hero.scroll') }}</a>
 
       <div class="marquee" aria-hidden="true">
         <div class="track">

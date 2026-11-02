@@ -13,8 +13,8 @@ import { IconComponent } from '../shared/icon.component';
   template: `
     <div class="progress" [style.transform]="'scaleX(' + progress() + ')'"></div>
     <header [class.scrolled]="scrolled()">
-      <nav class="pill" aria-label="Navigation">
-        <a href="#accueil" class="logo" aria-label="Accueil">
+      <nav class="pill">
+        <a href="#accueil" class="logo">
           <span class="mark">{{ profile.initials }}</span>
           <span class="word">{{ logo[0] }}<b>.</b>{{ logo[1] }}</span>
         </a>
@@ -36,14 +36,14 @@ import { IconComponent } from '../shared/icon.component';
           </button>
           <a class="cv" [href]="profile.cv" download>{{ i18n.t('nav.cv') }} <app-icon name="download" /></a>
           <button class="ibtn burger" (click)="menuOpen.update(o => !o)"
-                  [attr.aria-expanded]="menuOpen()" [attr.aria-label]="i18n.t('aria.menu')">
-            <app-icon [name]="menuOpen() ? 'close' : 'menu'" />
+                  [attr.aria-expanded]="menuOpen()">
+            <app-icon [name]="menuOpen() ? 'close' : 'menu'" /><span class="sr-only">{{ i18n.t('aria.menu') }}</span>
           </button>
         </div>
       </nav>
     </header>
-    <button class="to-top" [class.show]="scrolled()" (click)="scrollTop()" [attr.aria-label]="i18n.t('aria.top')">
-      <app-icon name="up" />
+    <button class="to-top" [class.show]="scrolled()" (click)="scrollTop()">
+      <app-icon name="up" /><span class="sr-only">{{ i18n.t('aria.top') }}</span>
     </button>
   `,
 })
