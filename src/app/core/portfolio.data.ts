@@ -88,7 +88,7 @@ export const PROFILE = {
   githubHandle: 'sims08265',
   linkedin: 'https://www.linkedin.com/in/celestin-simo-nouayou',
   linkedinHandle: 'celestin-simo-nouayou',
-  cv: 'My_CV.pdf',
+  cv: 'CV_Celestin_SIMO_NOUAYOU_EN.pdf',
   /** Badge d'accès (section À propos). */
   badgeTop: 'EFREI · ACCESS',
   level: 'ING2 · Efrei Paris',
