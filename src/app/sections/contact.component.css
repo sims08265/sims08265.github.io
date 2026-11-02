@@ -46,8 +46,11 @@ input, textarea {
 input:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px rgba(var(--accent-rgb), .14); }
 textarea { resize: vertical; min-height: 130px; }
 .btn { justify-self: start; }
+.status:empty { display: none; }
 .msg { display: flex; align-items: center; gap: 8px; font-size: .88rem; color: var(--accent); }
 .msg app-icon { width: 16px; height: 16px; }
+.fallback { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin-top: 10px; font-size: .88rem; color: var(--text); }
+.fallback a { color: var(--heading); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
 
 @media (max-width: 900px) {
   .grid { grid-template-columns: minmax(0, 1fr); }

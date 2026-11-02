@@ -1,3 +1,4 @@
+/* min-height des .term-body : hauteur du script complet (lignes repliées comprises), pour éviter tout décalage pendant la frappe. */
 .hero { min-height: 100svh; padding: 140px 0 0; display: flex; flex-direction: column; overflow: hidden; }
 
 /* ---------- Fond ---------- */
@@ -16,7 +17,8 @@
 .hero-grid { position: relative; flex: 1; display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center; }
 
 /* ---------- Entrée en cascade ---------- */
-.rise { opacity: 0; transform: translateY(24px); animation: rise .9s cubic-bezier(.2, .7, .2, 1) forwards; animation-delay: calc(var(--i) * 110ms + 150ms); }
+/* Départ à 1 % d'opacité (invisible à l'œil) : le navigateur compte le texte comme affiché dès le premier rendu (LCP). */
+.rise { opacity: .01; transform: translateY(24px); animation: rise .9s cubic-bezier(.2, .7, .2, 1) forwards; animation-delay: calc(var(--i) * 110ms + 150ms); }
 @keyframes rise { to { opacity: 1; transform: none; } }
 
 /* ---------- Texte ---------- */
@@ -28,7 +30,8 @@ h1 > span { display: block; }
 .dot { color: var(--accent); }
 .fullname { margin-top: 22px; font-size: .78rem; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
 .build { margin-top: 30px; font: 500 clamp(1.15rem, 2.2vw, 1.45rem)/1.35 var(--font-display); color: var(--text); }
-.typed { color: var(--heading); font-weight: 700; }
+/* inline-block : le mot tapé est un élément à part, sa frappe ne fait pas varier la mesure LCP du paragraphe */
+.typed { display: inline-block; color: var(--heading); font-weight: 700; }
 .caret { display: inline-block; width: 3px; height: 1.05em; margin-left: 4px; vertical-align: -3px; background: var(--accent); animation: blink 1s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 .lead { margin-top: 18px; max-width: 520px; color: var(--muted); }
@@ -52,7 +55,7 @@ h1 > span { display: block; }
 .mac { width: 11px; height: 11px; border-radius: 50%; }
 .mac.r { background: #ff5f57; } .mac.y { background: #febc2e; } .mac.g { background: #28c840; }
 .term-title { flex: 1; text-align: center; margin-right: 50px; font: .74rem var(--font-mono); color: #6b7680; }
-.term-body { padding: 22px 22px 26px; min-height: 330px; font: .84rem/1.85 var(--font-mono); color: #d7e3dc; }
+.term-body { padding: 22px 22px 26px; min-height: 372px; font: .84rem/1.85 var(--font-mono); color: #d7e3dc; }
 .ln { white-space: pre-wrap; }
 .out { color: #9fb0a8; padding-left: 18px; animation: fadein .3s ease; }
 .term-body .p, .ln ::ng-deep .p { color: #4ade80; }
@@ -105,7 +108,7 @@ h1 > span { display: block; }
   .socials { margin-left: 0; }
 }
 @media (max-width: 520px) {
-  .term-body { font-size: .74rem; min-height: 290px; padding: 18px; }
+  .term-body { font-size: .74rem; min-height: 345px; padding: 18px; }
   .float { display: none; }
   .cta .btn { flex: 1 1 100%; justify-content: center; }
 }

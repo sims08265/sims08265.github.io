@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, afterNextRender, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, afterNextRender, computed, inject } from '@angular/core';
 import { I18nService } from './core/i18n.service';
 import { SeoService } from './core/seo.service';
 import { PROFILE } from './core/portfolio.data';
@@ -20,8 +20,10 @@ import { ContactComponent } from './sections/contact.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
     footer { position: relative; overflow: hidden; border-top: 1px solid var(--border); padding: 60px 0 28px; }
+    footer .container { container-type: inline-size; }
+    /* Taille calculée sur la largeur du conteneur et le nombre de caractères (~0,5 em/lettre + marge) : jamais coupé. */
     .giant {
-      font: 800 clamp(4rem, 17vw, 15rem)/.8 var(--font-display); letter-spacing: -.035em; text-align: center; white-space: nowrap;
+      font: 800 min(15rem, calc(100cqi / (var(--chars) * .54)))/.8 var(--font-display); letter-spacing: -.035em; text-align: center; white-space: nowrap;
       color: transparent; -webkit-text-stroke: 1px var(--border-strong); user-select: none;
       mask-image: linear-gradient(180deg, #000 30%, transparent 95%); -webkit-mask-image: linear-gradient(180deg, #000 30%, transparent 95%);
     }
@@ -30,19 +32,22 @@ import { ContactComponent } from './sections/contact.component';
   `,
   template: `
     <a href="#main" class="skip-link">{{ i18n.t('skip') }}</a>
-    <app-navbar />
+    <!-- Navigation et hero : activés dès que le navigateur est libre (les clics avant cela sont rejoués). -->
+    @defer (hydrate on idle; hydrate when hydrateAll()) { <app-navbar /> }
     <main id="main">
-      <app-hero />
-      <app-about />
-      <app-education />
-      <app-skills />
-      <app-projects />
-      <app-experience />
-      <app-contact />
+      @defer (hydrate on idle; hydrate when hydrateAll()) { <app-hero /> }
+      <!-- HTML pré-rendu affiché tout de suite. Le code de chaque section est téléchargé au repos et activé
+           quand elle arrive à l'écran, ou immédiatement si la langue affichée n'est pas celle du pré-rendu (FR). -->
+      @defer (hydrate on viewport; hydrate when hydrateAll(); prefetch on idle) { <app-about /> }
+      @defer (hydrate on viewport; hydrate when hydrateAll(); prefetch on idle) { <app-education /> }
+      @defer (hydrate on viewport; hydrate when hydrateAll(); prefetch on idle) { <app-skills /> }
+      @defer (hydrate on viewport; hydrate when hydrateAll(); prefetch on idle) { <app-projects /> }
+      @defer (hydrate on viewport; hydrate when hydrateAll(); prefetch on idle) { <app-experience /> }
+      @defer (hydrate on viewport; hydrate when hydrateAll(); prefetch on idle) { <app-contact /> }
     </main>
     <footer>
       <div class="container">
-        <div class="giant" aria-hidden="true">{{ giant }}</div>
+        <div class="giant" aria-hidden="true" [style.--chars]="giant.length">{{ giant }}</div>
         <div class="row">
           <span>© {{ year }} {{ name }}</span>
           <span class="mono"><b>&lt;/&gt;</b> {{ i18n.t('footer.made') }}</span>
@@ -54,6 +59,7 @@ import { ContactComponent } from './sections/contact.component';
 export class App {
   protected readonly i18n = inject(I18nService);
   protected readonly year = new Date().getFullYear();
+  protected readonly hydrateAll = computed(() => this.i18n.lang() !== 'fr');
   protected readonly name = `${PROFILE.firstNames} ${PROFILE.lastName}`;
   protected readonly giant = `${PROFILE.displayFirst} ${PROFILE.displayLast}`.toUpperCase();
 
