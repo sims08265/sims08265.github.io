@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>favicon</title>
+<!-- Source of public/favicon.ico and public/apple-touch-icon.png: run `python tools/favicon.py`.
+     Same mark as the navbar logo: initials (PROFILE.initials in src/app/core/portfolio.data.ts) on the site gradient.
+     Each size is drawn natively (no downscaling) so the small icons stay sharp. Positions must match favicon.py. -->
+<style>
+  @font-face { font-family: 'Bricolage Grotesque'; font-weight: 400 800; src: url('../public/fonts/bricolage-grotesque-latin.woff2') format('woff2'); }
+  html, body { margin: 0; background: transparent; }
+  .mark {
+    position: absolute; top: 0; display: grid; place-items: center; box-sizing: border-box;
+    background: linear-gradient(100deg, #4ade80 0%, #2dd4bf 50%, #22d3ee 100%);
+    color: #04130a; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; letter-spacing: -.04em; line-height: 1;
+  }
+  /* apple-touch-icon : carré plein (iOS arrondit lui-même les coins) */
+  .s180 { left: 0; width: 180px; height: 180px; font-size: 86px; }
+  .s48 { left: 200px; width: 48px; height: 48px; border-radius: 13px; font-size: 25px; }
+  .s32 { left: 260px; width: 32px; height: 32px; border-radius: 8px; font-size: 17px; }
+  .s16 { left: 300px; width: 16px; height: 16px; border-radius: 4px; font-size: 9.5px; letter-spacing: -.06em; }
+</style>
+</head>
+<body>
+  <div class="mark s180">CS</div>
+  <div class="mark s48">CS</div>
+  <div class="mark s32">CS</div>
+  <div class="mark s16">CS</div>
+</body>
+</html>

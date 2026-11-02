@@ -34,6 +34,8 @@ All text lives in **`src/app/core/portfolio.data.ts`**, in French and English. T
 - **CV**: put the PDF in `public/` and set `PROFILE.cv` to its file name.
 - **Social preview image** (`public/og-image.png`, 1200×630): edit `tools/og-image.html`, then regenerate it with
   the command in that file's header comment (headless Microsoft Edge).
+- **Favicon** (`public/favicon.ico`, `public/apple-touch-icon.png`): the initials on the site gradient, drawn by
+  `tools/favicon.html`; regenerate with `python tools/favicon.py` (standard library + Microsoft Edge).
 - Content rules (facts only, private repositories never linked, FR + EN) are in [CLAUDE.md](CLAUDE.md).
   With Claude Code, `/maj-portfolio <what changed>` applies an update end to end.
 
