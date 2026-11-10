@@ -28,7 +28,7 @@ Owner: Celestin Gills SIMO NOUAYOU (GitHub `sims08265`).
 
 1. Edit the data in `src/app/core/portfolio.data.ts` (both `fr` and `en`).
 2. `npm run build` — must pass with **no warnings and no errors**.
-3. Commit with the message `content: <what changed>`.
+3. Commit with the message `content: <what changed>`. Commits are authored by Celestin only: **never add `Co-Authored-By`, `Claude-Session` or any other AI attribution line** to commit messages or PR descriptions.
 4. Push to `main`.
 5. The site redeploys by itself (`.github/workflows/deploy.yml`, about 1–2 minutes).
 

@@ -34,6 +34,6 @@ Follow `CLAUDE.md` strictly (facts only, private repositories never linked, FR +
 7. **Show the diff and stop.** Show `git status --short` and `git diff` (the full diff of
    `portfolio.data.ts`), plus a short FR/EN summary of what changed and what you asked. **Do not commit
    until the owner explicitly approves.**
-8. After approval: `git add -A`, commit with the message `content: <what changed>` (short, in English), and
+8. After approval: `git add -A`, commit with the message `content: <what changed>` (short, in English, with no `Co-Authored-By` / `Claude-Session` / AI attribution line), and
    `git push`. Then report the commit, the deploy run (`gh run list --workflow deploy.yml --limit 1`) and the
    site URL https://sims08265.github.io (it updates about 1–2 minutes after the push).
